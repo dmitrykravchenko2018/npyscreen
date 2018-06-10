@@ -87,7 +87,10 @@ class TextfieldBase(widget.Widget):
             if isinstance(self.value, bytes):
                 # use a unicode version of self.value to work out where the cursor is.
                 # not always accurate, but better than the bytes
-                value_to_use_for_calculations = self.display_value(self.value).decode(self.encoding, 'replace')
+                if hasattr(self.display_value(self.value), 'decode'):
+                    value_to_use_for_calculations = self.display_value(self.value).decode(self.encoding, 'replace')
+                else:
+                    value_to_use_for_calculations = self.display_value(self.value)
             if cursor:
                 if self.cursor_position is False:
                     self.cursor_position = len(value_to_use_for_calculations)
